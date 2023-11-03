@@ -3,32 +3,54 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public delegate int GetAgeDelegate(int personId);
+public delegate string GetNameDelegate(int personId);
+public delegate short GetPostalCodeDelegate(int personId);
 public class DataProvider : MonoBehaviour
 {
     [SerializeField] private DataConsumer dataConsumer;
-    
-    [SerializeField] private int genericAge = 18;
-    [SerializeField] private string genericName = "name";
-    [SerializeField] private short genericPostalCode = 1408;
+
+    [SerializeField] private int _genericAge = 18;
+    [SerializeField] private string _genericName = "name";
+    [SerializeField] private short _genericPostalCode = 1408;
+
+    //Delegates
+    public GetAgeDelegate getAgeDelegate;
+    public GetNameDelegate getNameDelegate;
+    public GetPostalCodeDelegate getPostalCodeDelegate;
+
+    private void OnEnable()
+    {
+        getAgeDelegate = GetAge;
+        getNameDelegate = GetName;
+        getPostalCodeDelegate = GetPostalCode;
+    }
+
+    private void OnDisable()
+    {
+        getAgeDelegate = null;
+        getNameDelegate = null;
+        getPostalCodeDelegate = null;
+    }
 
     private int GetAge(int personId)
     {
-        return genericAge;
+        return _genericAge;
     }
-    
+
     private string GetName(int personId)
     {
-        return genericName;
+        return _genericName;
     }
-    
+
     private short GetPostalCode(int personId)
     {
-        return genericPostalCode;
+        return _genericPostalCode;
     }
 
     [ContextMenu("Test report")]
     private void TestReport()
     {
-        dataConsumer.ReportPersonData(0);
+        dataConsumer.ReportPersonData(0, getNameDelegate, getAgeDelegate, getPostalCodeDelegate);
     }
 }
