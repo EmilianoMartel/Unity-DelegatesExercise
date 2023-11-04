@@ -19,19 +19,6 @@ public class DataProvider : MonoBehaviour
     public GetNameDelegate getNameDelegate;
     public GetPostalCodeDelegate getPostalCodeDelegate;
 
-    private void OnEnable()
-    {
-        getAgeDelegate = GetAge;
-        getNameDelegate = GetName;
-        getPostalCodeDelegate = GetPostalCode;
-    }
-
-    private void OnDisable()
-    {
-        getAgeDelegate = null;
-        getNameDelegate = null;
-        getPostalCodeDelegate = null;
-    }
 
     private int GetAge(int personId)
     {
@@ -51,6 +38,6 @@ public class DataProvider : MonoBehaviour
     [ContextMenu("Test report")]
     private void TestReport()
     {
-        dataConsumer.ReportPersonData(0, getNameDelegate, getAgeDelegate, getPostalCodeDelegate);
+        dataConsumer.ReportPersonData(0, GetName, GetAge, GetPostalCode);
     }
 }
